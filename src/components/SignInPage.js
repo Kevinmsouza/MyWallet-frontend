@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { sendLoginRequest } from "../services/MyWallet";
 import { GeneralForm, GeneralInput, Logo, Page, TextButton, WideButton } from "./shared/styledComponents"
 import { Link, useHistory } from "react-router-dom";
@@ -9,7 +9,13 @@ export default function SignInPage() {
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false);
     let history = useHistory()
-    const { setUserData } = useContext(UserContext)
+    const { userData, setUserData } = useContext(UserContext)
+
+    useEffect(() => {
+        if (userData) {
+            history.push("/");
+        }
+    }, [userData])
 
     function login(e) {
         setIsLoading(true);

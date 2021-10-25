@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { sendSignUpRequest } from "../services/MyWallet";
 import { GeneralForm, GeneralInput, Logo, Page, TextButton, WideButton } from "./shared/styledComponents"
 import { Link, useHistory } from "react-router-dom";
+import UserContext from "../contexts/UserContext";
 
 export default function SignUpPage() {
     const [name, setName] = useState('')
@@ -10,6 +11,13 @@ export default function SignUpPage() {
     const [password2, setPassword2] = useState('')
     const [isLoading, setIsLoading] = useState(false);
     let history = useHistory()
+    const { userData } = useContext(UserContext)
+
+    useEffect(() => {
+        if (userData) {
+            history.push("/");
+        }
+    }, [userData])
 
     function signUp(e) {
         setIsLoading(true);
@@ -26,6 +34,10 @@ export default function SignUpPage() {
             })
             .catch(err => {
                 setIsLoading(false);
+                if (err.response.status === 400) {
+                    alert("Email invalido!");
+                    return;
+                }
                 if (err.response.status === 409) {
                     alert("Email já utilizado!");
                     return;
