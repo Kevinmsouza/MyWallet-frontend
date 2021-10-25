@@ -1,46 +1,73 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
 import { Header, Page } from "./shared/styledComponents";
 import { LogOutOutline } from 'react-ionicons'
-import { sendLogoutRequest } from "../services/MyWallet";
+import { sendLogoutRequest, getOperationsRequest } from "../services/MyWallet";
+import Operation from "./Operation";
 
-export default function HomePage () {
+export default function HomePage() {
     let history = useHistory();
-    const {userData, setUserData} = useContext(UserContext);
-
+    const { userData, setUserData } = useContext(UserContext);
+    const [ operations, setOperations ] = useState([])
     useEffect(() => {
         if (userData) {
-            
-        }else if (userData === ""){
+            renderOperations()
+        } else if (userData === "") {
             history.push("/sign-in")
         }
     }, [userData])
 
-    function logout (){
+    function renderOperations() {
+        getOperationsRequest(userData.token)
+            .then(res => {
+                setOperations(res.data)
+            })
+            .catch(err => {
+                alert("Ocorreu um error!")
+                console.log(err)
+            })
+    }
+
+    function logout() {
         sendLogoutRequest()
-            .finally(()=>{
+            .finally(() => {
                 setUserData(null);
                 localStorage.removeItem("userData");
                 history.push("/sign-in");
             })
     }
 
-    if(!userData) return <Page></Page>
+    if (!userData) return <Page></Page>
 
-    return(
+    return (
         <Page>
             <Header>
                 <div>Olá, {userData.name.split(' ')[0]}</div>
                 <LogOutOutline
-                    color={'#fff'} 
+                    color={'#fff'}
                     height="40px"
                     width="40px"
                     onClick={logout}
                 />
             </Header>
-            <WhiteBoard/>
+            <WhiteBoard>
+                {operations.length?
+                    operations.map(e => <Operation 
+                        key={e.id} 
+                        id={e.id}
+                        date={e.date}
+                        value={e.value}
+                        description={e.description}
+                    />)
+                    :
+                    <EmptyBoard>
+                        <p>Não há registros de</p>
+                        <p>entrada ou saída</p>
+                    </EmptyBoard>
+                }
+            </WhiteBoard>
             <Footer>
 
             </Footer>
@@ -53,6 +80,16 @@ const WhiteBoard = styled.div`
     width: 85vw;
     background-color: #fff;
     overflow: scroll;
+    padding: 10px;
+`;
+
+const EmptyBoard = styled.div`
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #868686;
 `;
 
 const Footer = styled.footer`

@@ -2,8 +2,12 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:4000"
 
-function createHeaders(token){
-    return {Authorization: `Bearer ${token}`}
+function createConfig (token){
+    return {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
 }
 
 function sendLoginRequest (body){
@@ -15,11 +19,16 @@ function sendSignUpRequest (body){
 }
 
 function sendLogoutRequest (token){
-    return axios.post(`${BASE_URL}/logout`, {}, createHeaders(token))
+    return axios.post(`${BASE_URL}/logout`, {}, createConfig(token))
+}
+
+function getOperationsRequest (token){
+    return axios.get(`${BASE_URL}/operations`, createConfig(token))
 }
 
 export {
     sendLoginRequest,
     sendSignUpRequest,
-    sendLogoutRequest
+    sendLogoutRequest,
+    getOperationsRequest
 }
