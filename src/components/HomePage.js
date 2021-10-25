@@ -39,7 +39,7 @@ export default function HomePage() {
     }
 
     function logout() {
-        sendLogoutRequest()
+        sendLogoutRequest(userData.token)
             .finally(() => {
                 setUserData(null);
                 localStorage.removeItem("userData");
