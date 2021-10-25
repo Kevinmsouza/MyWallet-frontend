@@ -1,10 +1,11 @@
 import "./assets/reset.css"
-import { BrowserRouter, Switch, Route } from "react-router-dom"
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom"
 import SignInPage from "./components/SignInPage"
 import UserContext from "./contexts/UserContext"
 import { useEffect, useState } from "react";
 import SignUpPage from "./components/SignUpPage";
 import HomePage from "./components/HomePage"
+import NewOpPage from "./components/NewOpPage";
 
 export default function App() {
     const [userData, setUserData] = useState(null);
@@ -31,8 +32,11 @@ export default function App() {
                     <Route path="/" exact>
                         <HomePage />
                     </Route>
-                    <Route path="/new" exact>
-
+                    <Route path="/new/:type" exact>
+                        <NewOpPage />
+                    </Route>
+                    <Route path="*">
+                        <Redirect to="/" />
                     </Route>
                 </Switch>
             </BrowserRouter>

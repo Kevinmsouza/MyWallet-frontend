@@ -6,6 +6,7 @@ import { Header, Page, Value } from "./shared/styledComponents";
 import { LogOutOutline } from 'react-ionicons'
 import { sendLogoutRequest, getOperationsRequest } from "../services/MyWallet";
 import Operation from "./Operation";
+import NewOpButton from "./NewOpButton";
 
 export default function HomePage() {
     let history = useHistory();
@@ -15,7 +16,6 @@ export default function HomePage() {
     useEffect(() => {
         if (userData) {
             renderOperations()
-            
         } else if (userData === "") {
             history.push("/sign-in")
         }
@@ -81,7 +81,8 @@ export default function HomePage() {
                 <Value value={total}>{total > 0? (total/100).toFixed(2) : (-total/100).toFixed(2)}</Value>
             </Total>
             <Footer>
-
+                <NewOpButton type="entrada"/>
+                <NewOpButton type="saída"/>
             </Footer>
         </Page>
     )
@@ -110,13 +111,7 @@ const Footer = styled.footer`
     width: 85vw;
     display: flex;
     justify-content: space-between;
-`;
-
-const SquareButton = styled.button`
-    width: 155px;
-    height: 114px;
-    background-color: #A328D6;
-    border-radius: 5px;
+    padding-top: 13px;
 `;
 
 const Total = styled.div`

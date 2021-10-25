@@ -26,9 +26,14 @@ function getOperationsRequest (token){
     return axios.get(`${BASE_URL}/operations`, createConfig(token))
 }
 
+function postOperationsRequest (body, token){
+    return axios.post(`${BASE_URL}/operations`, body, createConfig(token))
+}
+
 export {
     sendLoginRequest,
     sendSignUpRequest,
     sendLogoutRequest,
-    getOperationsRequest
+    getOperationsRequest,
+    postOperationsRequest
 }
