@@ -70,11 +70,28 @@ const TextButton = styled.p`
     font-weight: 700;
 `;
 
+const Header = styled.header`
+    height: 78px;
+    width: 85vw;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 26px;
+    line-height: 31px;
+    div{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 80%;
+    }
+`;
+
 export {
     Page,
     Logo,
     GeneralForm,
     GeneralInput,
     WideButton,
-    TextButton
+    TextButton,
+    Header
 }
