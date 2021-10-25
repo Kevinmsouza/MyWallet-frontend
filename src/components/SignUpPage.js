@@ -1,34 +1,33 @@
-import { useContext, useState } from "react"
-import { sendLoginRequest } from "../services/MyWallet";
+import { useState } from "react"
+import { sendSignUpRequest } from "../services/MyWallet";
 import { GeneralForm, GeneralInput, Logo, Page, TextButton, WideButton } from "./shared/styledComponents"
 import { Link, useHistory } from "react-router-dom";
-import UserContext from "../contexts/UserContext";
 
-export default function SignInPage() {
+export default function SignUpPage() {
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [password2, setPassword2] = useState('')
     const [isLoading, setIsLoading] = useState(false);
     let history = useHistory()
-    const { setUserData } = useContext(UserContext)
 
-    function login(e) {
+    function signUp(e) {
         setIsLoading(true);
         e.preventDefault();
         const body = {
+            name,
             email,
             password
         }
-        sendLoginRequest(body)
+        sendSignUpRequest(body)
             .then(res => {
                 setIsLoading(false);
-                setUserData(res.data);
-                localStorage.setItem("userData", JSON.stringify(res.data));
-                history.push("/");
+                history.push("/sign-in");
             })
             .catch(err => {
                 setIsLoading(false);
-                if (err.response.status === 404) {
-                    alert("Email ou senha incorretos!");
+                if (err.response.status === 409) {
+                    alert("Email já utilizado!");
                     return;
                 }
                 if (err.response.status === 500) {
@@ -41,7 +40,16 @@ export default function SignInPage() {
     return (
         <Page>
             <Logo>MyWallet</Logo>
-            <GeneralForm onSubmit={login}>
+            <GeneralForm onSubmit={signUp}>
+                <GeneralInput
+                    placeholder="Nome"
+                    value={name}
+                    pattern="\S{3, 40}"
+                    title="Nomes devem ter entre 3 e 40 caracteres"
+                    onChange={e => setName(e.target.value)}
+                    required
+                    disabled={isLoading}
+                />
                 <GeneralInput
                     placeholder="E-mail"
                     type="email"
@@ -54,16 +62,27 @@ export default function SignInPage() {
                     placeholder="Senha"
                     type="password"
                     value={password}
+                    pattern="\S{6,}"
+                    title="Minimo 6 caracteres."
                     onChange={e => setPassword(e.target.value)}
                     required
                     disabled={isLoading}
                 />
-                <WideButton type="submit" disabled={isLoading}>Entrar</WideButton>
+                <GeneralInput
+                    placeholder="Confirme a senha"
+                    type="password"
+                    value={password2}
+                    pattern={password}
+                    title="Senhas devem ser iguais"
+                    onChange={e => setPassword2(e.target.value)}
+                    required
+                    disabled={isLoading}
+                />
+                <WideButton type="submit" disabled={isLoading}>Cadastrar</WideButton>
             </GeneralForm>
-            <Link to={isLoading ? "/sign-in" : "/sign-up"}>
-                <TextButton>Primeira vez? Cadastre-se!</TextButton>
+            <Link to={isLoading ? "/sign-up" : "/sign-in"}>
+                <TextButton>Já tem uma conta? Entre agora!</TextButton>
             </Link>
-
         </Page>
     )
 }

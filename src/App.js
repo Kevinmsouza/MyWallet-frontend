@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom"
 import SignInPage from "./components/SignInPage"
 import UserContext from "./contexts/UserContext"
 import { useState } from "react";
+import SignUpPage from "./components/SignUpPage";
 
 export default function App() {
     const [userData, setUserData] = useState(null);
@@ -11,7 +12,7 @@ export default function App() {
             <BrowserRouter>
                 <Switch>
                     <Route path="/sign-up" exact>
-
+                        <SignUpPage />
                     </Route>
                     <Route path="/sign-in" exact>
                         <SignInPage />

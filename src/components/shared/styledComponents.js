@@ -22,6 +22,7 @@ const Logo = styled.div`
 
 const GeneralForm = styled.form`
     width: 85vw;
+    margin-bottom: 35px;
 `;
 
 const GeneralInput = styled.input`
@@ -66,7 +67,6 @@ const WideButton = styled.button`
 const TextButton = styled.p`
     font-size: 15px;
     line-height: 18px;
-    margin-top: 35px;
     font-weight: 700;
 `;
 
