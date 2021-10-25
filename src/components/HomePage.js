@@ -71,7 +71,7 @@ export default function HomePage() {
                     />)
                     :
                     <EmptyBoard>
-                        <p>Não há registros de</p>
+                        <p>Não há registros de </p>
                         <p>entrada ou saída</p>
                     </EmptyBoard>
                 }
@@ -104,6 +104,7 @@ const EmptyBoard = styled.div`
     align-items: center;
     justify-content: center;
     color: #868686;
+    flex-direction: column;
 `;
 
 const Footer = styled.footer`
