@@ -45,4 +45,13 @@ table {
 *{
     box-sizing: border-box;
 	flex-shrink: none;
+	
+}
+body{
+	font-family: 'Raleway', sans-serif;
+	color: #fff;
+}
+a{
+	text-decoration: none;
+	color: inherit;
 }
