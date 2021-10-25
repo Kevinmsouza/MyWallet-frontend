@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import UserContext from "../contexts/UserContext";
-import { Header, Page } from "./shared/styledComponents";
+import { Header, Page, Value } from "./shared/styledComponents";
 import { LogOutOutline } from 'react-ionicons'
 import { sendLogoutRequest, getOperationsRequest } from "../services/MyWallet";
 import Operation from "./Operation";
@@ -11,13 +11,21 @@ export default function HomePage() {
     let history = useHistory();
     const { userData, setUserData } = useContext(UserContext);
     const [ operations, setOperations ] = useState([])
+    const [ total, setTotal] = useState(0)
     useEffect(() => {
         if (userData) {
             renderOperations()
+            
         } else if (userData === "") {
             history.push("/sign-in")
         }
     }, [userData])
+
+    useEffect(() => {
+        if (operations.length){
+            setTotal(operations.map(op => op.value).reduce((p, c) => p + c))
+        }
+    }, [operations])
 
     function renderOperations() {
         getOperationsRequest(userData.token)
@@ -68,6 +76,10 @@ export default function HomePage() {
                     </EmptyBoard>
                 }
             </WhiteBoard>
+            <Total>
+                <p>SALDO</p>
+                <Value value={total}>{total > 0? (total/100).toFixed(2) : (-total/100).toFixed(2)}</Value>
+            </Total>
             <Footer>
 
             </Footer>
@@ -76,11 +88,12 @@ export default function HomePage() {
 }
 
 const WhiteBoard = styled.div`
-    height: calc(100vh - 219px);
+    height: calc(100vh - 250px);
     width: 85vw;
     background-color: #fff;
     overflow: scroll;
     padding: 10px;
+    border-radius: 5px 5px 0 0;
 `;
 
 const EmptyBoard = styled.div`
@@ -104,4 +117,21 @@ const SquareButton = styled.button`
     height: 114px;
     background-color: #A328D6;
     border-radius: 5px;
+`;
+
+const Total = styled.div`
+    width: 85vw;
+    height: 30px;
+    font-size: 17px;
+    line-height: 20px;
+    color: #000;
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    border-radius: 0 0 5px 5px;
+    background-color: #fff;
+    padding: 10px;
+    p{
+        font-weight: 700;
+    }
 `;
