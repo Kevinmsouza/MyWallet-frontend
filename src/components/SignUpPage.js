@@ -34,6 +34,10 @@ export default function SignUpPage() {
             })
             .catch(err => {
                 setIsLoading(false);
+                if (!err.response) {
+                    alert("Servidor offline");
+                    return;
+                }
                 if (err.response.status === 400) {
                     alert("Email invalido!");
                     return;
@@ -56,7 +60,7 @@ export default function SignUpPage() {
                 <GeneralInput
                     placeholder="Nome"
                     value={name}
-                    pattern="\S{3, 40}"
+                    pattern="\S{3,40}"
                     title="Nomes devem ter entre 3 e 40 caracteres"
                     onChange={e => setName(e.target.value)}
                     required
