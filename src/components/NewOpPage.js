@@ -23,8 +23,9 @@ export default function NewOpPage (){
     function saveOp (e){
         setIsLoading(true);
         e.preventDefault();
+        const intValue = value * 100;
         const body = {
-            value: type === 'entrada'? value : -value,
+            value: type === 'entrada'? intValue : -intValue,
             description
         }
         postOperationsRequest(body, userData.token)
@@ -33,6 +34,7 @@ export default function NewOpPage (){
             })
             .catch(err => {
                 alert("Ocorreu um error!")
+                setIsLoading(false);
             })
     }
 
@@ -42,7 +44,7 @@ export default function NewOpPage (){
             <GeneralForm onSubmit={saveOp}>
             <GeneralInput
                     placeholder="Valor"
-                    pattern="^[0-9]*$"
+                    type="number"
                     title="Insira apenas numeros"
                     value={value}
                     onChange={e => setValue(e.target.value)}

@@ -60,7 +60,7 @@ export default function SignUpPage() {
                 <GeneralInput
                     placeholder="Nome"
                     value={name}
-                    pattern="\S{3, 40}"
+                    pattern="\S{3,40}"
                     title="Nomes devem ter entre 3 e 40 caracteres"
                     onChange={e => setName(e.target.value)}
                     required
