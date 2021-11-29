@@ -34,7 +34,6 @@ export default function HomePage() {
             })
             .catch(err => {
                 alert("Ocorreu um error!")
-                console.log(err)
             })
     }
 

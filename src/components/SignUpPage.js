@@ -34,6 +34,10 @@ export default function SignUpPage() {
             })
             .catch(err => {
                 setIsLoading(false);
+                if (!err.response) {
+                    alert("Servidor offline");
+                    return;
+                }
                 if (err.response.status === 400) {
                     alert("Email invalido!");
                     return;

@@ -33,6 +33,10 @@ export default function SignInPage() {
             })
             .catch(err => {
                 setIsLoading(false);
+                if (!err.response) {
+                    alert("Servidor offline");
+                    return;
+                }
                 if (err.response.status === 404) {
                     alert("Email ou senha incorretos!");
                     return;
